@@ -1,7 +1,30 @@
 import { AppComponent } from './app.component';
-import {NumberUtils} from '../shared/number-utils';
+import {NumberUtils} from './shared/utils/number-utils';
+import {TemperatureServiceService} from './shared/services/temperature-service.service';
+import {TestBed} from '@angular/core/testing';
+// let comp: AppComponent;
 
 describe('AppComponent\'s temperature conversions', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+
+    let service: TemperatureServiceService;
+    let temperatureServiceStub: Partial<TemperatureServiceService>;
+
+    temperatureServiceStub = {
+      getAverageTemperatureSummary: (city: string) =>  `The average temperature of ${city} is 50`,
+      getAverageTemperature: (city: string) => 55,
+    };
+
+    TestBed.configureTestingModule({
+      declarations: [ AppComponent ],
+      providers: [ { provide: TemperatureServiceService, useValue: temperatureServiceStub } ],
+    });
+
+    service = TestBed.inject(TemperatureServiceService);
+    let fixture = TestBed.createComponent(AppComponent);
+    // comp = fixture.componentInstance;
+  });
   const comp = new AppComponent();
   it('converts fahrenheiht to celsius', () => {
     expect(comp.convertFahrenheitToCelsius(0)).toBe(-17.78)
@@ -25,6 +48,10 @@ describe('AppComponent\'s temperature conversions', () => {
 
   it('converts kelvin to celsius', () => {
     expect(comp.convertKelvinToCelsius(0)).toBe(-273.15)
+  })
+
+  it('converts fahrenheit to schmelvins', () => {
+    expect(comp.convertFahrenheihtToSchmelvins(0)).toBe(100)
   })
 
 });

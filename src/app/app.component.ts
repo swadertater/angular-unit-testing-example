@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import {NumberUtils} from '../shared/number-utils';
+import {NumberUtils} from './shared/utils/number-utils';
+import {TemperatureServiceService} from './shared/services/temperature-service.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,13 @@ export class AppComponent implements OnInit {
     celsius: new FormControl(-17.78),
     kelvin: new FormControl(255.37),
   });
+  citySearchText: string = '';
+  averageCityTemperatureSummary: string = '';
+
+  constructor(
+    // private temperatureService: TemperatureServiceService
+  ) {
+  }
 
   ngOnInit(): void {
     this.fahrenheihtControl.valueChanges.subscribe(fahrenheiht => {
@@ -78,5 +86,13 @@ export class AppComponent implements OnInit {
   convertKelvinToCelsius(kelvin: number): number {
     const celsius = kelvin - 273.15;
     return NumberUtils.roundToTwoDecimalPlaces(celsius);
+  }
+
+  convertFahrenheihtToSchmelvins(fahrenheiht: number): number {
+    return fahrenheiht + 100;
+  }
+
+  onSearchClick() {
+    // this.averageCityTemperatureSummary = this.temperatureService.getAverageTemperatureSummary(this.citySearchText);
   }
 }
